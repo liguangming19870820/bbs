@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxt.dao.DetailMapper" >
+
+  <sql id="fields" >
+      id,order_id orderId,product_no productNo,product_name productName,color,size,sku_price skuPrice,amount<!--fields-->
+  </sql>
+
+  <sql id="where_clause">
+  	<where>
+    </where>
+  </sql>
+
+  <sql id="orderby_clause">
+  	order by id
+  </sql>
+
+  <sql id="limit_clause">
+  	limit #{startRow}, #{pageSize}
+  </sql>
+
+  <select id="getDetailById" resultType="com.xxt.entity.Detail">
+    select <include refid="fields"/>
+    from bbs_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getDetailListWithPage" parameterType="com.xxt.entity.DetailQuery" resultType="com.xxt.entity.Detail">
+    select <include refid="fields"/>
+    from bbs_detail
+    <include refid="where_clause"/>
+    <include refid="orderby_clause"/>
+    <include refid="limit_clause"/>
+  </select>
+
+  <select id="getDetailList" resultType="com.xxt.entity.Detail">
+    select <include refid="fields"/>
+    from bbs_detail
+  </select>
+
+  <select id="getDetailCount" resultType="int">
+    select count(id)
+    from bbs_detail
+    <include refid="where_clause"/>
+  </select>
+
+  <delete id="deleteDetailById">
+    delete from bbs_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="saveDetail" parameterType="com.xxt.entity.Detail" >
+    insert into bbs_detail (id,order_id,product_no,product_name,color,size,sku_price,amount)<!--table_field-->
+    values (#{id,jdbcType=INTEGER},#{orderId,jdbcType=INTEGER},#{productNo,jdbcType=VARCHAR},#{productName,jdbcType=VARCHAR},#{color,jdbcType=VARCHAR},#{size,jdbcType=VARCHAR},#{skuPrice,jdbcType=DOUBLE},#{amount,jdbcType=INTEGER})<!--entity_field-->
+  </insert>
+
+  <update id="updateDetail" parameterType="com.xxt.entity.Detail" >
+    update bbs_detail
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="productNo != null" >
+        product_no = #{productNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null" >
+        color = #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        size = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="skuPrice != null" >
+        sku_price = #{skuPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+	  <!--updateif-->
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

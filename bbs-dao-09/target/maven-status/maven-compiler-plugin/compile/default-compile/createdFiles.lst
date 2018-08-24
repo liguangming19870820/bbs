@@ -1,0 +1,15 @@
+com\xxt\dao\TypeMapper.class
+com\xxt\dao\ProductMapper.class
+com\xxt\dao\ColorMapper.class
+com\xxt\dao\EmployeeMapper.class
+com\xxt\dao\ImgMapper.class
+com\xxt\dao\BrandMapper.class
+com\xxt\dao\CityMapper.class
+com\xxt\dao\ProvinceMapper.class
+com\xxt\dao\AddrMapper.class
+com\xxt\dao\TownMapper.class
+com\xxt\dao\OrderMapper.class
+com\xxt\dao\SkuMapper.class
+com\xxt\dao\FeatureMapper.class
+com\xxt\dao\DetailMapper.class
+com\xxt\dao\BuyerMapper.class

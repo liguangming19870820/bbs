@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxt.dao.ProvinceMapper" >
+
+  <sql id="fields" >
+      id,code,name<!--fields-->
+  </sql>
+
+  <sql id="where_clause">
+  	<where>
+    </where>
+  </sql>
+
+  <sql id="orderby_clause">
+  	order by id
+  </sql>
+
+  <sql id="limit_clause">
+  	limit #{startRow}, #{pageSize}
+  </sql>
+
+  <select id="getProvinceById" resultType="com.xxt.entity.Province">
+    select <include refid="fields"/>
+    from bbs_province
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getProvinceListWithPage" parameterType="com.xxt.entity.ProvinceQuery" resultType="com.xxt.entity.Province">
+    select <include refid="fields"/>
+    from bbs_province
+    <include refid="where_clause"/>
+    <include refid="orderby_clause"/>
+    <include refid="limit_clause"/>
+  </select>
+
+  <select id="getProvinceList" resultType="com.xxt.entity.Province">
+    select <include refid="fields"/>
+    from bbs_province
+  </select>
+
+  <select id="getProvinceCount" resultType="int">
+    select count(id)
+    from bbs_province
+    <include refid="where_clause"/>
+  </select>
+
+  <delete id="deleteProvinceById">
+    delete from bbs_province
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="saveProvince" parameterType="com.xxt.entity.Province" >
+    insert into bbs_province (id,code,name)<!--table_field-->
+    values (#{id,jdbcType=INTEGER},#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR})<!--entity_field-->
+  </insert>
+
+  <update id="updateProvince" parameterType="com.xxt.entity.Province" >
+    update bbs_province
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+	  <!--updateif-->
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

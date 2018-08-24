@@ -1,0 +1,47 @@
+package com.xxt.service.impl;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.common.page.Pagination;
+import com.xxt.dao.ProductMapper;
+import com.xxt.entity.Product;
+import com.xxt.entity.ProductQuery;
+import com.xxt.service.ProductService;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+
+	@Autowired
+	ProductMapper productMapper;
+
+	@Override
+	public Pagination getProductListWithPage(ProductQuery productQuery) {
+		return new Pagination(productQuery.getPageNo(), productQuery.getPageSize(), productMapper.getProductCount(productQuery), productMapper.getProductListWithPage(productQuery));
+	}
+
+	@Override
+	public Product getProductById(Integer id) {
+		return productMapper.getProductById(id);
+	}
+
+	@Override
+	public List<Product> getProductList() {
+		return productMapper.getProductList();
+	}
+
+	@Override
+	public void updateProduct(Product product) {
+		productMapper.updateProduct(product);
+	}
+
+	@Override
+	public void saveProduct(Product product) {
+		productMapper.saveProduct(product);
+	}
+
+	@Override
+	public void deleteProductById(Integer id) {
+		productMapper.deleteProductById(id);
+	}
+}

@@ -1,0 +1,53 @@
+package com.xxt.service.impl;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.common.page.Pagination;
+import com.xxt.dao.SkuMapper;
+import com.xxt.entity.Product;
+import com.xxt.entity.Sku;
+import com.xxt.entity.SkuQuery;
+import com.xxt.service.SkuService;
+
+@Service
+public class SkuServiceImpl implements SkuService {
+
+	@Autowired
+	SkuMapper skuMapper;
+
+	@Override
+	public Pagination getSkuListWithPage(SkuQuery skuQuery) {
+		return new Pagination(skuQuery.getPageNo(), skuQuery.getPageSize(), skuMapper.getSkuCount(skuQuery), skuMapper.getSkuListWithPage(skuQuery));
+	}
+
+	@Override
+	public Sku getSkuById(Integer id) {
+		return skuMapper.getSkuById(id);
+	}
+
+	@Override
+	public List<Sku> getSkuList() {
+		return skuMapper.getSkuList();
+	}
+
+	@Override
+	public void updateSku(Sku sku) {
+		skuMapper.updateSku(sku);
+	}
+
+	@Override
+	public void saveSku(Sku sku) {
+		skuMapper.saveSku(sku);
+	}
+
+	@Override
+	public void deleteSkuById(Integer id) {
+		skuMapper.deleteSkuById(id);
+	}
+
+	@Override
+	public Sku getSkuByProductId(Integer id) {
+		return skuMapper.getSkuByProductId(id);
+	}
+}

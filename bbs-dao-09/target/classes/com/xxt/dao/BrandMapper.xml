@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxt.dao.BrandMapper" >
+
+  <sql id="fields" >
+      id,name,description,img_url imgUrl,web_site webSite,sort,is_display isDisplay<!--fields-->
+  </sql>
+
+  <sql id="where_clause">
+  	<where>
+  		<if test="name!=null and name!=''">
+  			name like "%"#{name}"%"
+  		</if>
+  		<if test="isDisplay!=null">
+  			and is_display = #{isDisplay}
+  		</if>
+    </where>
+  </sql>
+
+  <sql id="orderby_clause">
+  	order by id
+  </sql>
+
+  <sql id="limit_clause">
+  	limit #{startRow}, #{pageSize}
+  </sql>
+
+  <select id="getBrandById" resultType="com.xxt.entity.Brand">
+    select <include refid="fields"/>
+    from bbs_brand
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <select id="getBrandByName" resultType="com.xxt.entity.Brand">
+    select <include refid="fields"/>
+    from bbs_brand
+    where name = #{name}
+  </select>
+
+  <select id="getBrandListWithPage" parameterType="com.xxt.entity.BrandQuery" resultType="com.xxt.entity.Brand">
+    select <include refid="fields"/>
+    from bbs_brand
+    <include refid="where_clause"/>
+    <include refid="orderby_clause"/>
+    <include refid="limit_clause"/>
+  </select>
+
+  <select id="getBrandList" resultType="com.xxt.entity.Brand">
+    select <include refid="fields"/>
+    from bbs_brand
+  </select>
+
+  <select id="getBrandCount" resultType="int">
+    select count(id)
+    from bbs_brand
+    <include refid="where_clause"/>
+  </select>
+
+  <delete id="deleteBrandById">
+    delete from bbs_brand
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="saveBrand" parameterType="com.xxt.entity.Brand" >
+    insert into bbs_brand (id,name,description,img_url,web_site,sort,is_display)<!--table_field-->
+    values (#{id,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{imgUrl,jdbcType=VARCHAR},#{webSite,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{isDisplay,jdbcType=SMALLINT})<!--entity_field-->
+  </insert>
+
+  <update id="updateBrand" parameterType="com.xxt.entity.Brand" >
+    update bbs_brand
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="webSite != null" >
+        web_site = #{webSite,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="isDisplay != null" >
+        is_display = #{isDisplay,jdbcType=SMALLINT},
+      </if>
+	  <!--updateif-->
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

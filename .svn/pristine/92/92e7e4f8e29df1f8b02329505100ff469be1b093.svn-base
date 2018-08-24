@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxt.dao.AddrMapper" >
+
+  <sql id="fields" >
+      id,buyer_id buyerId,name,city,addr,phone,is_def isDef<!--fields-->
+  </sql>
+
+  <sql id="where_clause">
+  	<where>
+    </where>
+  </sql>
+
+  <sql id="orderby_clause">
+  	order by id
+  </sql>
+
+  <sql id="limit_clause">
+  	limit #{startRow}, #{pageSize}
+  </sql>
+
+  <select id="getAddrById" resultType="com.xxt.entity.Addr">
+    select <include refid="fields"/>
+    from bbs_addr
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getAddrListWithPage" parameterType="com.xxt.entity.AddrQuery" resultType="com.xxt.entity.Addr">
+    select <include refid="fields"/>
+    from bbs_addr
+    <include refid="where_clause"/>
+    <include refid="orderby_clause"/>
+    <include refid="limit_clause"/>
+  </select>
+
+  <select id="getAddrList" resultType="com.xxt.entity.Addr">
+    select <include refid="fields"/>
+    from bbs_addr
+  </select>
+
+  <select id="getAddrCount" resultType="int">
+    select count(id)
+    from bbs_addr
+    <include refid="where_clause"/>
+  </select>
+
+  <delete id="deleteAddrById">
+    delete from bbs_addr
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="saveAddr" parameterType="com.xxt.entity.Addr" >
+    insert into bbs_addr (id,buyer_id,name,city,addr,phone,is_def)<!--table_field-->
+    values (#{id,jdbcType=INTEGER},#{buyerId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},#{addr,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{isDef,jdbcType=INTEGER})<!--entity_field-->
+  </insert>
+
+  <update id="updateAddr" parameterType="com.xxt.entity.Addr" >
+    update bbs_addr
+    <set >
+      <if test="buyerId != null" >
+        buyer_id = #{buyerId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isDef != null" >
+        is_def = #{isDef,jdbcType=INTEGER},
+      </if>
+	  <!--updateif-->
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

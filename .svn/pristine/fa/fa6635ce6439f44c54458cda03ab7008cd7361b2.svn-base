@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxt.dao.SkuMapper" >
+
+  <sql id="fields" >
+      id,product_id productId,color_id colorId,size,delive_fee deliveFee,sku_price skuPrice,stock_inventory stockInventory,sku_upper_limit skuUpperLimit,location,sku_img skuImg,sku_sort skuSort,sku_name skuName,market_price marketPrice,create_time createTime,update_time updateTime,create_user_id createUserId,update_user_id updateUserId,last_status lastStatus,sku_type skuType,sales<!--fields-->
+  </sql>
+
+  <sql id="where_clause">
+  	<where>
+    </where>
+  </sql>
+
+  <sql id="orderby_clause">
+  	order by id
+  </sql>
+
+  <sql id="limit_clause">
+  	limit #{startRow}, #{pageSize}
+  </sql>
+
+  <select id="getSkuById" resultType="com.xxt.entity.Sku">
+    select <include refid="fields"/>
+    from bbs_sku
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getSkuListWithPage" parameterType="com.xxt.entity.SkuQuery" resultType="com.xxt.entity.Sku">
+    select <include refid="fields"/>
+    from bbs_sku
+    <include refid="where_clause"/>
+    <include refid="orderby_clause"/>
+    <include refid="limit_clause"/>
+  </select>
+
+  <select id="getSkuList" resultType="com.xxt.entity.Sku">
+    select <include refid="fields"/>
+    from bbs_sku
+  </select>
+
+  <select id="getSkuCount" resultType="int">
+    select count(id)
+    from bbs_sku
+    <include refid="where_clause"/>
+  </select>
+
+  <delete id="deleteSkuById">
+    delete from bbs_sku
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="saveSku" parameterType="com.xxt.entity.Sku" >
+    insert into bbs_sku (id,product_id,color_id,size,delive_fee,sku_price,stock_inventory,sku_upper_limit,location,sku_img,sku_sort,sku_name,market_price,create_time,update_time,create_user_id,update_user_id,last_status,sku_type,sales)<!--table_field-->
+    values (#{id,jdbcType=INTEGER},#{productId,jdbcType=INTEGER},#{colorId,jdbcType=INTEGER},#{size,jdbcType=VARCHAR},#{deliveFee,jdbcType=DOUBLE},#{skuPrice,jdbcType=DOUBLE},#{stockInventory,jdbcType=INTEGER},#{skuUpperLimit,jdbcType=INTEGER},#{location,jdbcType=VARCHAR},#{skuImg,jdbcType=VARCHAR},#{skuSort,jdbcType=INTEGER},#{skuName,jdbcType=VARCHAR},#{marketPrice,jdbcType=DOUBLE},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{createUserId,jdbcType=VARCHAR},#{updateUserId,jdbcType=VARCHAR},#{lastStatus,jdbcType=INTEGER},#{skuType,jdbcType=INTEGER},#{sales,jdbcType=INTEGER})<!--entity_field-->
+  </insert>
+
+  <update id="updateSku" parameterType="com.xxt.entity.Sku" >
+    update bbs_sku
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="colorId != null" >
+        color_id = #{colorId,jdbcType=INTEGER},
+      </if>
+      <if test="size != null" >
+        size = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveFee != null" >
+        delive_fee = #{deliveFee,jdbcType=DOUBLE},
+      </if>
+      <if test="skuPrice != null" >
+        sku_price = #{skuPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="stockInventory != null" >
+        stock_inventory = #{stockInventory,jdbcType=INTEGER},
+      </if>
+      <if test="skuUpperLimit != null" >
+        sku_upper_limit = #{skuUpperLimit,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="skuImg != null" >
+        sku_img = #{skuImg,jdbcType=VARCHAR},
+      </if>
+      <if test="skuSort != null" >
+        sku_sort = #{skuSort,jdbcType=INTEGER},
+      </if>
+      <if test="skuName != null" >
+        sku_name = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null" >
+        market_price = #{marketPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserId != null" >
+        update_user_id = #{updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastStatus != null" >
+        last_status = #{lastStatus,jdbcType=INTEGER},
+      </if>
+      <if test="skuType != null" >
+        sku_type = #{skuType,jdbcType=INTEGER},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
+	  <!--updateif-->
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

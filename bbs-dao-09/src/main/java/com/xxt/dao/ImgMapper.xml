@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxt.dao.ImgMapper" >
+
+  <sql id="fields" >
+      id,product_id productId,url,is_def isDef<!--fields-->
+  </sql>
+
+  <sql id="where_clause">
+  	<where>
+    </where>
+  </sql>
+
+  <sql id="orderby_clause">
+  	order by id
+  </sql>
+
+  <sql id="limit_clause">
+  	limit #{startRow}, #{pageSize}
+  </sql>
+
+  <select id="getImgById" resultType="com.xxt.entity.Img">
+    select <include refid="fields"/>
+    from bbs_img
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getImgByProductId" resultType="com.xxt.entity.Img">
+    select <include refid="fields"/>
+    from bbs_img
+    where product_id = #{productId}
+  </select>
+
+  <select id="getImgListWithPage" parameterType="com.xxt.entity.ImgQuery" resultType="com.xxt.entity.Img">
+    select <include refid="fields"/>
+    from bbs_img
+    <include refid="where_clause"/>
+    <include refid="orderby_clause"/>
+    <include refid="limit_clause"/>
+  </select>
+
+  <select id="getImgList" resultType="com.xxt.entity.Img">
+    select <include refid="fields"/>
+    from bbs_img
+  </select>
+
+  <select id="getImgCount" resultType="int">
+    select count(id)
+    from bbs_img
+    <include refid="where_clause"/>
+  </select>
+
+  <delete id="deleteImgById">
+    delete from bbs_img
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+    <delete id="deleteImgByProductId">
+    delete from bbs_img
+    where product_id = #{productId}
+  </delete>
+
+  <insert id="saveImg" parameterType="com.xxt.entity.Img" >
+    insert into bbs_img (id,product_id,url,is_def)<!--table_field-->
+    values (#{id,jdbcType=INTEGER},#{productId,jdbcType=INTEGER},#{url,jdbcType=VARCHAR},#{isDef,jdbcType=SMALLINT})<!--entity_field-->
+  </insert>
+
+  <update id="updateImg" parameterType="com.xxt.entity.Img" >
+    update bbs_img
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="isDef != null" >
+        is_def = #{isDef,jdbcType=SMALLINT},
+      </if>
+	  <!--updateif-->
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

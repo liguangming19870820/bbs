@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxt.dao.EmployeeMapper" >
+
+  <sql id="fields" >
+      username,password,degree,email,gender,img_url imgUrl,phone,real_name realName,school,is_del isDel<!--fields-->
+  </sql>
+
+  <sql id="where_clause">
+  	<where>
+    </where>
+  </sql>
+
+  <sql id="orderby_clause">
+  	order by id
+  </sql>
+
+  <sql id="limit_clause">
+  	limit #{startRow}, #{pageSize}
+  </sql>
+
+  <select id="getEmployeeById" resultType="com.xxt.entity.Employee">
+    select <include refid="fields"/>
+    from bbs_employee
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getEmployeeListWithPage" parameterType="com.xxt.entity.EmployeeQuery" resultType="com.xxt.entity.Employee">
+    select <include refid="fields"/>
+    from bbs_employee
+    <include refid="where_clause"/>
+    <include refid="orderby_clause"/>
+    <include refid="limit_clause"/>
+  </select>
+
+  <select id="getEmployeeList" resultType="com.xxt.entity.Employee">
+    select <include refid="fields"/>
+    from bbs_employee
+  </select>
+
+  <select id="getEmployeeCount" resultType="int">
+    select count(username)
+    from bbs_employee
+    <include refid="where_clause"/>
+  </select>
+
+  <delete id="deleteEmployeeById">
+    delete from bbs_employee
+    where username = #{username,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="saveEmployee" parameterType="com.xxt.entity.Employee" >
+    insert into bbs_employee (username,password,degree,email,gender,img_url,phone,real_name,school,is_del)<!--table_field-->
+    values (#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{degree,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{gender,jdbcType=SMALLINT},#{imgUrl,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{realName,jdbcType=VARCHAR},#{school,jdbcType=VARCHAR},#{isDel,jdbcType=SMALLINT})<!--entity_field-->
+  </insert>
+
+  <update id="updateEmployee" parameterType="com.xxt.entity.Employee" >
+    update bbs_employee
+    <set >
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        degree = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=SMALLINT},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=SMALLINT},
+      </if>
+	  <!--updateif-->
+    </set>
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+</mapper>

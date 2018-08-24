@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.xxt</groupId>
+    <artifactId>bbs-parent-09</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.xxt</groupId>
+  <artifactId>bbs-09</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>bbs-controller-09</module>
+  	<module>bbs-service-09</module>
+  	<module>bbs-dao-09</module>
+  	<module>bbs-entity-09</module>
+  	<module>bbs-utils-09</module>
+  </modules>
+</project>

@@ -1,0 +1,107 @@
+package com.xxt.controller;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.common.page.Pagination;
+import com.xxt.common.config.Config;
+import com.xxt.entity.Brand;
+import com.xxt.entity.BrandQuery;
+import com.xxt.service.BrandService;
+
+@Controller
+public class BrandController {
+
+	@Autowired
+	BrandService brandService;
+
+	@RequestMapping("/brand/list")
+	public String list(Integer pageNo, BrandQuery brandQuery, Model model) {
+		brandQuery.setPageNo(Pagination.cpn(pageNo));
+
+		StringBuilder sb = new StringBuilder();
+		
+		if(StringUtils.isNoneBlank(brandQuery.getName())){
+			sb.append("&name=").append(brandQuery.getName());
+		}
+		if(brandQuery.getIsDisplay()==null){
+			brandQuery.setIsDisplay(Config.YES);
+		}
+		sb.append("&isDisplay=").append(brandQuery.getIsDisplay());
+		
+		Pagination pagination = brandService.getBrandListWithPage(brandQuery);
+		String params = sb.toString();
+		if (StringUtils.isNotBlank(params) && params.startsWith("&")) {
+			params = params.substring(1);
+		}
+		pagination.pageView("/brand/list.do", params);
+		
+		model.addAttribute("path",Config.IMAGE_URL);
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("pageNo", pageNo);
+		model.addAttribute("brandQuery", brandQuery);
+		return "brand/list";
+	}
+
+	@RequestMapping("/brand/addinput")
+	public String addinput() {
+		return "brand/add";
+	}
+
+	@ResponseBody
+	@RequestMapping("/brand/save")
+	public String save(Brand brand) {
+		if (StringUtils.isBlank(brand.getName())) {
+			return "1";
+		}
+		if (StringUtils.isBlank(brand.getImgUrl())) {
+			return "2";
+		}
+		Brand b = brandService.getBrandByName(brand.getName());
+		if (b != null) {
+			return "3";
+		}
+		brandService.saveBrand(brand);
+		return "0";
+	}
+
+	@RequestMapping("/brand/edit")
+	public String edit(Integer id, Model model, Integer pageNo) {
+		Brand brand = brandService.getBrandById(id);
+		model.addAttribute("brand", brand);
+		model.addAttribute("path",Config.IMAGE_URL);
+		model.addAttribute("pageNo",pageNo);
+		return "brand/edit";
+	}
+
+	@ResponseBody
+	@RequestMapping("/brand/update")
+	public String update(Brand brand) {
+		if (StringUtils.isBlank(brand.getImgUrl())) {
+			return "1";
+		}
+		brandService.updateBrand(brand);
+		return "0";
+	}
+
+	@RequestMapping("/brand/delete")
+	public String delete(Integer id) {
+		brandService.deleteBrandById(id);
+		return "redirect:/brand/list.do";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/brand/deleteByIds")
+	public String deleteByIds(Integer[] ids) {
+		if(ids!=null && ids.length>0){
+			for(Integer id : ids){
+				brandService.deleteBrandById(id);
+			}
+		}
+		return "0";
+	}
+}

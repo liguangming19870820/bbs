@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxt.dao.CityMapper" >
+
+  <sql id="fields" >
+      id,code,name,province<!--fields-->
+  </sql>
+
+  <sql id="where_clause">
+  	<where>
+    </where>
+  </sql>
+
+  <sql id="orderby_clause">
+  	order by id
+  </sql>
+
+  <sql id="limit_clause">
+  	limit #{startRow}, #{pageSize}
+  </sql>
+
+  <select id="getCityById" resultType="com.xxt.entity.City">
+    select <include refid="fields"/>
+    from bbs_city
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getCityListWithPage" parameterType="com.xxt.entity.CityQuery" resultType="com.xxt.entity.City">
+    select <include refid="fields"/>
+    from bbs_city
+    <include refid="where_clause"/>
+    <include refid="orderby_clause"/>
+    <include refid="limit_clause"/>
+  </select>
+
+  <select id="getCityList" resultType="com.xxt.entity.City">
+    select <include refid="fields"/>
+    from bbs_city
+  </select>
+
+  <select id="getCityCount" resultType="int">
+    select count(id)
+    from bbs_city
+    <include refid="where_clause"/>
+  </select>
+
+  <delete id="deleteCityById">
+    delete from bbs_city
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="saveCity" parameterType="com.xxt.entity.City" >
+    insert into bbs_city (id,code,name,province)<!--table_field-->
+    values (#{id,jdbcType=INTEGER},#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR})<!--entity_field-->
+  </insert>
+
+  <update id="updateCity" parameterType="com.xxt.entity.City" >
+    update bbs_city
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+	  <!--updateif-->
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

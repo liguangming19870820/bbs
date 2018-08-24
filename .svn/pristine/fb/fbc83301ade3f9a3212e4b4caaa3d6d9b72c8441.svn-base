@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxt.dao.ProductMapper" >
+
+  <sql id="fields" >
+      id,no,name,weight,is_new isNew,is_hot isHot,is_commend isCommend,create_time createTime,create_user_id createUserId,check_time checkTime,check_user_id checkUserId,is_show isShow,is_del isDel,type_id typeId,brand_id brandId,keywords,sales,description,package_list packageList,feature,color,size<!--fields-->
+  </sql>
+
+  <sql id="where_clause">
+  	<where>
+    </where>
+  </sql>
+
+  <sql id="orderby_clause">
+  	order by id
+  </sql>
+
+  <sql id="limit_clause">
+  	limit #{startRow}, #{pageSize}
+  </sql>
+
+  <select id="getProductById" resultType="com.xxt.entity.Product">
+    select <include refid="fields"/>
+    from bbs_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getProductListWithPage" parameterType="com.xxt.entity.ProductQuery" resultType="com.xxt.entity.Product">
+    select <include refid="fields"/>
+    from bbs_product
+    <include refid="where_clause"/>
+    <include refid="orderby_clause"/>
+    <include refid="limit_clause"/>
+  </select>
+
+  <select id="getProductList" resultType="com.xxt.entity.Product">
+    select <include refid="fields"/>
+    from bbs_product
+  </select>
+
+  <select id="getProductCount" resultType="int">
+    select count(id)
+    from bbs_product
+    <include refid="where_clause"/>
+  </select>
+
+  <delete id="deleteProductById">
+    delete from bbs_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="saveProduct" parameterType="com.xxt.entity.Product" >
+    insert into bbs_product (id,no,name,weight,is_new,is_hot,is_commend,create_time,create_user_id,check_time,check_user_id,is_show,is_del,type_id,brand_id,keywords,sales,description,package_list,feature,color,size)<!--table_field-->
+    values (#{id,jdbcType=INTEGER},#{no,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{weight,jdbcType=DOUBLE},#{isNew,jdbcType=SMALLINT},#{isHot,jdbcType=SMALLINT},#{isCommend,jdbcType=SMALLINT},#{createTime,jdbcType=TIMESTAMP},#{createUserId,jdbcType=VARCHAR},#{checkTime,jdbcType=TIMESTAMP},#{checkUserId,jdbcType=VARCHAR},#{isShow,jdbcType=SMALLINT},#{isDel,jdbcType=SMALLINT},#{typeId,jdbcType=INTEGER},#{brandId,jdbcType=INTEGER},#{keywords,jdbcType=VARCHAR},#{sales,jdbcType=INTEGER},#{description,jdbcType=LONGVARCHAR},#{packageList,jdbcType=LONGVARCHAR},#{feature,jdbcType=VARCHAR},#{color,jdbcType=VARCHAR},#{size,jdbcType=VARCHAR})<!--entity_field-->
+  </insert>
+
+  <update id="updateProduct" parameterType="com.xxt.entity.Product" >
+    update bbs_product
+    <set >
+      <if test="no != null" >
+        no = #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=DOUBLE},
+      </if>
+      <if test="isNew != null" >
+        is_new = #{isNew,jdbcType=SMALLINT},
+      </if>
+      <if test="isHot != null" >
+        is_hot = #{isHot,jdbcType=SMALLINT},
+      </if>
+      <if test="isCommend != null" >
+        is_commend = #{isCommend,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkUserId != null" >
+        check_user_id = #{checkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="isShow != null" >
+        is_show = #{isShow,jdbcType=SMALLINT},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="brandId != null" >
+        brand_id = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="packageList != null" >
+        package_list = #{packageList,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="feature != null" >
+        feature = #{feature,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null" >
+        color = #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        size = #{size,jdbcType=VARCHAR},
+      </if>
+	  <!--updateif-->
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

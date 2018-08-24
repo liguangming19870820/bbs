@@ -1,0 +1,47 @@
+package com.xxt.service.impl;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.common.page.Pagination;
+import com.xxt.dao.ImgMapper;
+import com.xxt.entity.Img;
+import com.xxt.entity.ImgQuery;
+import com.xxt.service.ImgService;
+
+@Service
+public class ImgServiceImpl implements ImgService {
+
+	@Autowired
+	ImgMapper imgMapper;
+
+	@Override
+	public Pagination getImgListWithPage(ImgQuery imgQuery) {
+		return new Pagination(imgQuery.getPageNo(), imgQuery.getPageSize(), imgMapper.getImgCount(imgQuery), imgMapper.getImgListWithPage(imgQuery));
+	}
+
+	@Override
+	public Img getImgById(Integer id) {
+		return imgMapper.getImgById(id);
+	}
+
+	@Override
+	public List<Img> getImgList() {
+		return imgMapper.getImgList();
+	}
+
+	@Override
+	public void updateImg(Img img) {
+		imgMapper.updateImg(img);
+	}
+
+	@Override
+	public void saveImg(Img img) {
+		imgMapper.saveImg(img);
+	}
+
+	@Override
+	public void deleteImgById(Integer id) {
+		imgMapper.deleteImgById(id);
+	}
+}
